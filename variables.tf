@@ -61,27 +61,27 @@ variable vms {
       "disk_size" = "8"
     }
     "vm06" = {
-      "type"      = "t2.micro"
+      "type"      = "t3.small"
       "ip"        = "192.168.0.106"
       "disk_size" = "8"
     }
     "vm07" = {
-      "type"      = "t2.micro"
+      "type"      = "t3.small"
       "ip"        = "192.168.0.107"
       "disk_size" = "8"
     }
     "vm08" = {
-      "type"      = "t2.large"
+      "type"      = "t3.large"
       "ip"        = "192.168.0.108"
       "disk_size" = "16"
     }
     "vm09" = {
-      "type"      = "t2.large"
+      "type"      = "t3.large"
       "ip"        = "192.168.0.109"
       "disk_size" = "16"
     }
     "vm10" = {
-      "type"      = "t2.large"
+      "type"      = "t3.large"
       "ip"        = "192.168.0.110"
       "disk_size" = "16"
     }
