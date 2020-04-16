@@ -57,12 +57,11 @@ resource "aws_instance" "my-ec2-bastion" {
   vpc_security_group_ids      = [aws_security_group.my-security-group.id]
   #Comme on veut SSH dans l'instance depuis l'internet, il est nécessaire d'associer une IP publique
   associate_public_ip_address = true
+  private_ip                  = var.bastion.ip
   #Les t2.micro sont les plus petites instances disponibles. L'avantage: elles rentrent dans 
   #le free tier de AWS.
   instance_type               = var.bastion.type
-  private_ip                  = var.bastion.ip
-
-
+  name                        = var.bastion.name
 
   #Il faut un disque de démarrage pour l'instance. On choisit un disque de la taille minimale (8GB), 
   #effacé ors de l'arrêt de l'instance, et de type gp2, c'est à dire "general purpose SSD". La 
@@ -73,11 +72,18 @@ resource "aws_instance" "my-ec2-bastion" {
     volume_size           = var.bastion.disk_size
     delete_on_termination = true
   }
+
+  tags = {
+    role = var.bastion.role
+    name = var.bastion.name
+  }
 }
 
 #Dernièrement, créons l'autre instance EC2 à laquelle on veut accéder à travers le bastion
 resource "aws_instance" "my-ec2-server" {
+  # Boucle sur toutes les VMs
   for_each = var.vms
+  # ---
   ami                         = lookup(var.ami,var.aws_region)
   availability_zone           = var.aws_availability_zone
   ebs_optimized               = false
@@ -88,14 +94,21 @@ resource "aws_instance" "my-ec2-server" {
   #Puisque cette instance doit rester privée, on n'assigne pas d'IP publique
   associate_public_ip_address = false
   #Enfin, on peut également assigner une IP privée fixée de manière à SSH plus simplement.
-  instance_type               = each.value.type
   private_ip                  = each.value.ip
+  instance_type               = each.value.type
+  name                        = each.key
 
   root_block_device {
     volume_type           = "gp2"
     volume_size           = each.value.disk_size
     delete_on_termination = true
   }
+
+  tags = {
+    role = each.value.role
+    name = each.key
+  }
+
 
   #Permet de spécifier un script de démarrage. Ici, pour l'exemple, on peut écrire un fichier 
   #dans /home/ec2-user

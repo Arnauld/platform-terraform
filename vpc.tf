@@ -1,7 +1,7 @@
 #Création d'une ressource "my-vpc" qui utilise des adresses ip en 192.168.0.0/24, donc de 
 #192.168.0.0 à 192.168.0.254 (l'adresse 192.168.0.255 étant celle de broadcast).
 resource "aws_vpc" "my-vpc" {
-  cidr_block           = "192.168.0.0/24"
+  cidr_block           = var.vpc_cidr
   #Desactiver les noms d'hôtes DNS (false par défaut, redondant).
   enable_dns_hostnames = false
   #Activer le support DNS (true par défaut, redondant).
@@ -31,7 +31,7 @@ resource "aws_subnet" "my-vpc-subnet" {
   #nom du VPC, ce qui rend les changements faciles.
   vpc_id                  = aws_vpc.my-vpc.id
   #Ce subnet prend tout l'espace CIDR du VPC
-  cidr_block              = "192.168.0.0/24"
+  cidr_block              = var.vpc_cidr
   #Permet de fixer l'availability zone utilisée, facultatif. 
   availability_zone       = "eu-west-1a"
   #Ce paramètre permet de faire en sorte qu'une instance lancée dans ce subnet n'a, par défaut, pas 

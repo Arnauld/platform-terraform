@@ -34,7 +34,12 @@ variable bastion {
     "type"      = "t2.micro"
     "ip"        = "192.168.0.101"
     "disk_size" = "8"
+    "role"      = "bastion"
   }
+}
+
+variable vpc_cidr {
+  default = "192.168.0.0/24"
 }
 
 variable vms {
@@ -44,46 +49,55 @@ variable vms {
       "type"      = "t2.micro"
       "ip"        = "192.168.0.102"
       "disk_size" = "8"
+      "role"      = "supervision-ui"
     }
     "vm03" = {
-      "type"      = "t2.micro"
+      "type"      = "t3.small"
       "ip"        = "192.168.0.103"
       "disk_size" = "8"
+      "role"      = "agent-k3s"
     }
     "vm04" = {
-      "type"      = "t2.micro"
+      "type"      = "t3.small"
       "ip"        = "192.168.0.104"
       "disk_size" = "8"
+      "role"      = "agent-k3s"
     }
     "vm05" = {
-      "type"      = "t2.micro"
+      "type"      = "t3.small"
       "ip"        = "192.168.0.105"
       "disk_size" = "8"
+      "role"      = "agent-k3s"
     }
     "vm06" = {
-      "type"      = "t3.small"
+      "type"      = "t2.micro"
       "ip"        = "192.168.0.106"
       "disk_size" = "8"
+      "role"      = "master-k3s"
     }
     "vm07" = {
-      "type"      = "t3.small"
+      "type"      = "t2.micro"
       "ip"        = "192.168.0.107"
       "disk_size" = "8"
+      "role"      = "master-k3s"
     }
     "vm08" = {
       "type"      = "t3.large"
       "ip"        = "192.168.0.108"
       "disk_size" = "16"
+      "role"      = "db"
     }
     "vm09" = {
       "type"      = "t3.large"
       "ip"        = "192.168.0.109"
       "disk_size" = "16"
+      "role"      = "db"
     }
     "vm10" = {
       "type"      = "t3.large"
       "ip"        = "192.168.0.110"
       "disk_size" = "16"
+      "role"      = "db"
     }
   }
 }
