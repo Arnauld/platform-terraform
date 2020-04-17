@@ -11,7 +11,7 @@ resource "aws_security_group" "my-security-group" {
   name        = "my-security-group"
   description = "Allow whitelisted IP in"
   #On rattache le security group au VPC créé précédemment
-  vpc_id      = aws_vpc.my-vpc.id
+  vpc_id = aws_vpc.my-vpc.id
 
   #Sert à définir une règle d'entrée: L'accès à tous les ports, vers tous les ports, tous 
   #protocoles, est possible depuis un certain bloc CIDR
@@ -44,24 +44,24 @@ resource "aws_security_group" "my-security-group" {
 #Créons maintenant notre première instance EC2: le bastion
 resource "aws_instance" "my-ec2-bastion" {
   #Cette AMI (amazon machine image) 
-  ami                         = lookup(var.ami,var.aws_region)
-  availability_zone           = var.aws_availability_zone
-  ebs_optimized               = false
+  ami               = lookup(var.ami, var.aws_region)
+  availability_zone = var.aws_availability_zone
+  ebs_optimized     = false
   #Inutile de surveiller en détail l'instance (et cela sort du free tier)
-  monitoring                  = false
+  monitoring = false
   #On utilise la clé générée précédemment
-  key_name                    = aws_key_pair.my-key.id
+  key_name = aws_key_pair.my-key.id
   #L'instance est placée dans le subnet créé précédemment
-  subnet_id                   = aws_subnet.my-vpc-subnet.id
+  subnet_id = aws_subnet.my-vpc-subnet.id
   #Et on utilise le security group qu'on a créé
-  vpc_security_group_ids      = [aws_security_group.my-security-group.id]
+  vpc_security_group_ids = [aws_security_group.my-security-group.id]
   #Comme on veut SSH dans l'instance depuis l'internet, il est nécessaire d'associer une IP publique
   associate_public_ip_address = true
   private_ip                  = var.bastion.ip
   #Les t2.micro sont les plus petites instances disponibles. L'avantage: elles rentrent dans 
   #le free tier de AWS.
-  instance_type               = var.bastion.type
-  name                        = var.bastion.name
+  instance_type = var.bastion.type
+  name          = var.bastion.name
 
   #Il faut un disque de démarrage pour l'instance. On choisit un disque de la taille minimale (8GB), 
   #effacé ors de l'arrêt de l'instance, et de type gp2, c'est à dire "general purpose SSD". La 
@@ -84,19 +84,19 @@ resource "aws_instance" "my-ec2-server" {
   # Boucle sur toutes les VMs
   for_each = var.vms
   # ---
-  ami                         = lookup(var.ami,var.aws_region)
-  availability_zone           = var.aws_availability_zone
-  ebs_optimized               = false
-  monitoring                  = false
-  key_name                    = aws_key_pair.my-key.id
-  subnet_id                   = aws_subnet.my-vpc-subnet.id
-  vpc_security_group_ids      = [aws_security_group.my-security-group.id]
+  ami                    = lookup(var.ami, var.aws_region)
+  availability_zone      = var.aws_availability_zone
+  ebs_optimized          = false
+  monitoring             = false
+  key_name               = aws_key_pair.my-key.id
+  subnet_id              = aws_subnet.my-vpc-subnet.id
+  vpc_security_group_ids = [aws_security_group.my-security-group.id]
   #Puisque cette instance doit rester privée, on n'assigne pas d'IP publique
   associate_public_ip_address = false
   #Enfin, on peut également assigner une IP privée fixée de manière à SSH plus simplement.
-  private_ip                  = each.value.ip
-  instance_type               = each.value.type
-  name                        = each.key
+  private_ip    = each.value.ip
+  instance_type = each.value.type
+  name          = each.key
 
   root_block_device {
     volume_type           = "gp2"

@@ -1,13 +1,13 @@
 #Création d'une ressource "my-vpc" qui utilise des adresses ip en 192.168.0.0/24, donc de 
 #192.168.0.0 à 192.168.0.254 (l'adresse 192.168.0.255 étant celle de broadcast).
 resource "aws_vpc" "my-vpc" {
-  cidr_block           = var.vpc_cidr
+  cidr_block = var.vpc_cidr
   #Desactiver les noms d'hôtes DNS (false par défaut, redondant).
   enable_dns_hostnames = false
   #Activer le support DNS (true par défaut, redondant).
-  enable_dns_support   = true
+  enable_dns_support = true
   #Gestion de l'instance, par défaut. Possible d'avoir un VPC "dedicated", mais nettement plus cher.
-  instance_tenancy     = "default"
+  instance_tenancy = "default"
 
   #Tags, un système clé:valeur au choix pour trier ses ressources.
   tags = {
@@ -29,11 +29,11 @@ resource "aws_internet_gateway" "my-vpc-iwg" {
 resource "aws_subnet" "my-vpc-subnet" {
   #A nouveau, le VPC dans lequel on crée le subnet. On préfère une référence à hard-coder le 
   #nom du VPC, ce qui rend les changements faciles.
-  vpc_id                  = aws_vpc.my-vpc.id
+  vpc_id = aws_vpc.my-vpc.id
   #Ce subnet prend tout l'espace CIDR du VPC
-  cidr_block              = var.vpc_cidr
+  cidr_block = var.vpc_cidr
   #Permet de fixer l'availability zone utilisée, facultatif. 
-  availability_zone       = "eu-west-1a"
+  availability_zone = "eu-west-1a"
   #Ce paramètre permet de faire en sorte qu'une instance lancée dans ce subnet n'a, par défaut, pas 
   #d'IP publique sauf si autrement spécifié.
   map_public_ip_on_launch = false
@@ -53,7 +53,7 @@ resource "aws_route_table" "my-vpc-routing-table" {
     gateway_id = aws_internet_gateway.my-vpc-iwg.id
   }
   vpc_id = aws_vpc.my-vpc.id
-  
+
   tags = {
     Name = "my-vpc-routing-table"
   }
@@ -63,7 +63,7 @@ resource "aws_route_table" "my-vpc-routing-table" {
 #généralement, mais il est requis de la déclarer sur terraform.
 resource "aws_route_table_association" "my-vpc-routing-table-association" {
   #On associe le subnet créé...
-  subnet_id      = aws_subnet.my-vpc-subnet.id
+  subnet_id = aws_subnet.my-vpc-subnet.id
   #Avec la table de routage précédente.
   route_table_id = aws_route_table.my-vpc-routing-table.id
 }
