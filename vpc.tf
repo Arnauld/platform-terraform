@@ -33,7 +33,7 @@ resource "aws_subnet" "my-vpc-subnet" {
   #Ce subnet prend tout l'espace CIDR du VPC
   cidr_block = var.vpc_cidr
   #Permet de fixer l'availability zone utilisée, facultatif. 
-  availability_zone = "eu-west-1a"
+  availability_zone = var.aws_availability_zone
   #Ce paramètre permet de faire en sorte qu'une instance lancée dans ce subnet n'a, par défaut, pas 
   #d'IP publique sauf si autrement spécifié.
   map_public_ip_on_launch = false

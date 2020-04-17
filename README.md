@@ -2,6 +2,7 @@
 $ docker run --rm -it --name terraform -v $(pwd):/tf -v ~/.aws:/root/.aws --entrypoint /bin/bash hashicorp/terraform:full
 # cd /tf
 # terraform apply -var="ip=$AUTHORIZED_IP"
+# terraform plan 
 # terraform destroy -var="ip=$AUTHORIZED_IP"
 ```
 

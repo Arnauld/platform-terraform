@@ -4,6 +4,10 @@ variable "profile" {
   default = "default"
 }
 
+variable ssh_key_pub {
+  description = "SSH public key installed by default on deployed instance"
+}
+
 #variable "ip" {
 #  #Sans valeur par défaut
 #}
@@ -25,6 +29,13 @@ variable "ami" {
     "eu-west-2" = "ami-0eb89db7593b5d434" # london
     "eu-west-3" = "ami-08c757228751c5335" # paris
   }
+}
+
+variable bastion_accepted_cidr_blocks {
+  type = list(string)
+  # no filter, accept all
+  # use ["123.4.5.6/32"] if you only want ip '123.4.5.6' to be authorized to connect to bastion
+  default = ["0.0.0.0/0"]
 }
 
 variable bastion {

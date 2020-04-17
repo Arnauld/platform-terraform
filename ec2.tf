@@ -2,7 +2,7 @@
 #recommandé d'utiliser `$ ssh-keygen -t rsa` pour en créer une et la remplacer ici.
 resource "aws_key_pair" "my-key" {
   key_name   = "my-key"
-  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC9vfLFiCVRvA3KXPzdwz+8CHwH/aADbMP3oEbJas6JuaOFwhHp9OkyMA9s7Mauuf8WEhqW8yt6XvJepLTrR6i8Q79MQVMeJDgbdROPBLJyq5F5litCJRtfRMLNNY+IxSJivrit13FaHcKdZSiIjck3eRzODs3C+PmcyFXGQd76ikYIeRvPQhezUA+E6VXZ6BnR6Vrqao3VzJWVexg9wES6icwjg09ZkBVvjpwj6mdbj2priWzMxWirVgnYlM8Uu52lww+DMNaNDgq0W3i+Wlw6+qKaf3rljYTfbGiMsjib+CrATkl2dyenvNfxg7SiMy8IHtInAxhN67QiGeqjzFyz Arnauld@mentem.home"
+  public_key = var.ssh_key_pub
 }
 
 #Permet de déclarer un group de sécurité pour EC2, sans quoi il ne sera pas possible d'y accéder
@@ -15,13 +15,12 @@ resource "aws_security_group" "my-security-group" {
 
   #Sert à définir une règle d'entrée: L'accès à tous les ports, vers tous les ports, tous 
   #protocoles, est possible depuis un certain bloc CIDR
-  #ingress {
-  #  from_port   = 0
-  #  to_port     = 0
-  #  protocol    = "-1"
-  #  #Ceci est une variable! C'est un type particulier de référence que nous aborderons ensuite
-  #  cidr_blocks = ["${var.ip}/32"]
-  #}
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = var.bastion_accepted_cidr_blocks
+  }
 
   ingress {
     from_port       = 22
@@ -61,7 +60,6 @@ resource "aws_instance" "my-ec2-bastion" {
   #Les t2.micro sont les plus petites instances disponibles. L'avantage: elles rentrent dans 
   #le free tier de AWS.
   instance_type = var.bastion.type
-  name          = var.bastion.name
 
   #Il faut un disque de démarrage pour l'instance. On choisit un disque de la taille minimale (8GB), 
   #effacé ors de l'arrêt de l'instance, et de type gp2, c'est à dire "general purpose SSD". La 
@@ -74,8 +72,8 @@ resource "aws_instance" "my-ec2-bastion" {
   }
 
   tags = {
-    role = var.bastion.role
-    name = var.bastion.name
+    Role = var.bastion.role
+    Name = var.bastion.name
   }
 }
 
@@ -96,7 +94,6 @@ resource "aws_instance" "my-ec2-server" {
   #Enfin, on peut également assigner une IP privée fixée de manière à SSH plus simplement.
   private_ip    = each.value.ip
   instance_type = each.value.type
-  name          = each.key
 
   root_block_device {
     volume_type           = "gp2"
@@ -105,8 +102,8 @@ resource "aws_instance" "my-ec2-server" {
   }
 
   tags = {
-    role = each.value.role
-    name = each.key
+    Role = each.value.role
+    Name = each.key
   }
 
 
