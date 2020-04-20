@@ -31,6 +31,11 @@ variable "ami" {
   }
 }
 
+variable env_prefix {
+  type = string
+  default = "dev"
+}
+
 variable bastion_accepted_cidr_blocks {
   type = list(string)
   # no filter, accept all

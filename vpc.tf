@@ -11,7 +11,8 @@ resource "aws_vpc" "my-vpc" {
 
   #Tags, un système clé:valeur au choix pour trier ses ressources.
   tags = {
-    Name = "my-vpc"
+    Name = "${var.env_prefix}-vpc"
+    Env  = "${var.env_prefix}-env"
   }
 }
 
@@ -21,7 +22,8 @@ resource "aws_internet_gateway" "my-vpc-iwg" {
   vpc_id = aws_vpc.my-vpc.id
 
   tags = {
-    Name = "my-vpc-iwg"
+    Name = "${var.env_prefix}-vpc-iwg"
+    Env  = "${var.env_prefix}-env"
   }
 }
 
@@ -39,7 +41,8 @@ resource "aws_subnet" "my-vpc-subnet" {
   map_public_ip_on_launch = false
 
   tags = {
-    Name = "my-vpc-subnet"
+    Name = "${var.env_prefix}-vpc-subnet"
+    Env  = "${var.env_prefix}-env"
   }
 }
 
@@ -55,7 +58,8 @@ resource "aws_route_table" "my-vpc-routing-table" {
   vpc_id = aws_vpc.my-vpc.id
 
   tags = {
-    Name = "my-vpc-routing-table"
+    Name = "${var.env_prefix}-vpc-routing-table"
+    Env  = "${var.env_prefix}-env"
   }
 }
 
@@ -95,6 +99,7 @@ resource "aws_network_acl" "my-vpc-acl" {
   }
 
   tags = {
-    Name = "my-vpc-acl"
+    Name = "${var.env_prefix}-vpc-acl"
+    Env  = "${var.env_prefix}-env"
   }
 }

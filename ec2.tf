@@ -3,6 +3,9 @@
 resource "aws_key_pair" "my-key" {
   key_name   = "my-key"
   public_key = var.ssh_key_pub
+  tags = {
+    Env  = "${var.env_prefix}-env"
+  }
 }
 
 #Permet de déclarer un group de sécurité pour EC2, sans quoi il ne sera pas possible d'y accéder
@@ -36,6 +39,9 @@ resource "aws_security_group" "my-security-group" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags = {
+    Env  = "${var.env_prefix}-env"
   }
 
 }
@@ -74,6 +80,7 @@ resource "aws_instance" "my-ec2-bastion" {
   tags = {
     Role = var.bastion.role
     Name = var.bastion.name
+    Env  = "${var.env_prefix}-env"
   }
 }
 
@@ -104,6 +111,7 @@ resource "aws_instance" "my-ec2-server" {
   tags = {
     Role = each.value.role
     Name = each.key
+    Env  = "${var.env_prefix}-env"
   }
 
 
