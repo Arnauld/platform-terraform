@@ -62,10 +62,10 @@ resource "aws_instance" "my-ec2-bastion" {
   vpc_security_group_ids = [aws_security_group.my-security-group.id]
   #Comme on veut SSH dans l'instance depuis l'internet, il est nécessaire d'associer une IP publique
   associate_public_ip_address = true
-  private_ip                  = var.bastion.ip
+  private_ip                  = lookup(var.vm_specs, var.bastion).ip
   #Les t2.micro sont les plus petites instances disponibles. L'avantage: elles rentrent dans 
   #le free tier de AWS.
-  instance_type = var.bastion.type
+  instance_type = lookup(var.vm_specs, var.bastion).type
 
   #Il faut un disque de démarrage pour l'instance. On choisit un disque de la taille minimale (8GB), 
   #effacé ors de l'arrêt de l'instance, et de type gp2, c'est à dire "general purpose SSD". La 
@@ -73,13 +73,13 @@ resource "aws_instance" "my-ec2-bastion" {
   #utiliser un SSD.
   root_block_device {
     volume_type           = "gp2"
-    volume_size           = var.bastion.disk_size
+    volume_size           = lookup(var.vm_specs, var.bastion).disk_size
     delete_on_termination = true
   }
 
   tags = {
-    Role = var.bastion.role
-    Name = var.bastion.name
+    Role = lookup(var.vm_specs, var.bastion).role
+    Name = var.bastion
     Env  = "${var.env_prefix}-env"
   }
 }
@@ -87,7 +87,7 @@ resource "aws_instance" "my-ec2-bastion" {
 #Dernièrement, créons l'autre instance EC2 à laquelle on veut accéder à travers le bastion
 resource "aws_instance" "my-ec2-server" {
   # Boucle sur toutes les VMs
-  for_each = var.vms
+  for_each = toset(var.vms)
   # ---
   ami                    = lookup(var.ami, var.aws_region)
   availability_zone      = var.aws_availability_zone
@@ -99,18 +99,18 @@ resource "aws_instance" "my-ec2-server" {
   #Puisque cette instance doit rester privée, on n'assigne pas d'IP publique
   associate_public_ip_address = false
   #Enfin, on peut également assigner une IP privée fixée de manière à SSH plus simplement.
-  private_ip    = each.value.ip
-  instance_type = each.value.type
+  private_ip    = lookup(var.vm_specs, each.value).ip
+  instance_type = lookup(var.vm_specs, each.value).type
 
   root_block_device {
     volume_type           = "gp2"
-    volume_size           = each.value.disk_size
+    volume_size           = lookup(var.vm_specs, each.value).disk_size
     delete_on_termination = true
   }
 
   tags = {
-    Role = each.value.role
-    Name = each.key
+    Role = lookup(var.vm_specs, each.value).role
+    Name = each.value
     Env  = "${var.env_prefix}-env"
   }
 

@@ -1,9 +1,9 @@
 ```
 $ docker run --rm -it --name terraform -v $(pwd):/tf -v ~/.aws:/root/.aws --entrypoint /bin/bash hashicorp/terraform:full
 # cd /tf
-# terraform apply -var="ip=$AUTHORIZED_IP"
-# terraform plan 
-# terraform destroy -var="ip=$AUTHORIZED_IP"
+# terraform plan    -var-file="vars/rss.tfvars" -var='vms=["vm02"]'
+# terraform apply   -var-file="vars/rss.tfvars" -var='vms=["vm02"]'
+# terraform destroy -var-file="vars/rss.tfvars" -var='vms=["vm02"]'
 ```
 
 ```

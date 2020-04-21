@@ -44,14 +44,8 @@ variable bastion_accepted_cidr_blocks {
 }
 
 variable bastion {
-  type = map(string)
-  default = {
-    "name"      = "vm01"
-    "type"      = "t2.micro"
-    "ip"        = "192.168.0.101"
-    "disk_size" = "8"
-    "role"      = "bastion"
-  }
+  type    = string
+  default = "vm01"
 }
 
 variable vpc_cidr {
@@ -59,8 +53,20 @@ variable vpc_cidr {
 }
 
 variable vms {
+  type = list(string)
+  description = "All vms (name) except the bastion"
+  default = ["vm02", "vm03", "vm04", "vm05", "vm06", "vm07", "vm08", "vm09", "vm10"]
+}
+
+variable vm_specs {
   type = map(map(string))
   default = {
+    "vm01" = {
+      "type"      = "t2.micro"
+      "ip"        = "192.168.0.101"
+      "disk_size" = "8"
+      "role"      = "bastion"
+    }
     "vm02" = {
       "type"      = "t2.micro"
       "ip"        = "192.168.0.102"
