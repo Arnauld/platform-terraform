@@ -48,8 +48,13 @@ variable bastion {
   default = "vm01"
 }
 
-variable vpc_cidr {
-  default = "192.168.0.0/24"
+variable cidr {
+  type = map(string)
+  default = {
+    vpc    = "10.0.0.0/16"
+    public = "10.0.0.0/24"
+    priv_a = "10.0.1.0/24"
+  }
 }
 
 variable vms {
@@ -63,61 +68,61 @@ variable vm_specs {
   default = {
     "vm01" = {
       "type"      = "t2.micro"
-      "ip"        = "192.168.0.101"
+      "ip"        = "10.0.0.101"
       "disk_size" = "8"
       "role"      = "bastion"
     }
     "vm02" = {
       "type"      = "t2.micro"
-      "ip"        = "192.168.0.102"
+      "ip"        = "10.0.1.102"
       "disk_size" = "8"
       "role"      = "supervision-ui"
     }
     "vm03" = {
       "type"      = "t3.small"
-      "ip"        = "192.168.0.103"
+      "ip"        = "10.0.1.103"
       "disk_size" = "8"
       "role"      = "agent-k3s"
     }
     "vm04" = {
       "type"      = "t3.small"
-      "ip"        = "192.168.0.104"
+      "ip"        = "10.0.1.104"
       "disk_size" = "8"
       "role"      = "agent-k3s"
     }
     "vm05" = {
       "type"      = "t3.small"
-      "ip"        = "192.168.0.105"
+      "ip"        = "10.0.1.105"
       "disk_size" = "8"
       "role"      = "agent-k3s"
     }
     "vm06" = {
       "type"      = "t2.micro"
-      "ip"        = "192.168.0.106"
+      "ip"        = "10.0.1.106"
       "disk_size" = "8"
       "role"      = "master-k3s"
     }
     "vm07" = {
       "type"      = "t2.micro"
-      "ip"        = "192.168.0.107"
+      "ip"        = "10.0.1.107"
       "disk_size" = "8"
       "role"      = "master-k3s"
     }
     "vm08" = {
       "type"      = "t3.large"
-      "ip"        = "192.168.0.108"
+      "ip"        = "10.0.1.108"
       "disk_size" = "16"
       "role"      = "db"
     }
     "vm09" = {
       "type"      = "t3.large"
-      "ip"        = "192.168.0.109"
+      "ip"        = "10.0.1.109"
       "disk_size" = "16"
       "role"      = "db"
     }
     "vm10" = {
       "type"      = "t3.large"
-      "ip"        = "192.168.0.110"
+      "ip"        = "10.0.1.110"
       "disk_size" = "16"
       "role"      = "db"
     }

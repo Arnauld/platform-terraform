@@ -57,7 +57,7 @@ resource "aws_instance" "my-ec2-bastion" {
   #On utilise la clé générée précédemment
   key_name = aws_key_pair.my-key.id
   #L'instance est placée dans le subnet créé précédemment
-  subnet_id = aws_subnet.my-vpc-subnet.id
+  subnet_id = aws_subnet.public-subnet.id
   #Et on utilise le security group qu'on a créé
   vpc_security_group_ids = [aws_security_group.my-security-group.id]
   #Comme on veut SSH dans l'instance depuis l'internet, il est nécessaire d'associer une IP publique
@@ -94,7 +94,7 @@ resource "aws_instance" "my-ec2-server" {
   ebs_optimized          = false
   monitoring             = false
   key_name               = aws_key_pair.my-key.id
-  subnet_id              = aws_subnet.my-vpc-subnet.id
+  subnet_id              = aws_subnet.private-subnet-a.id
   vpc_security_group_ids = [aws_security_group.my-security-group.id]
   #Puisque cette instance doit rester privée, on n'assigne pas d'IP publique
   associate_public_ip_address = false
