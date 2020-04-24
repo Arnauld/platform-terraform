@@ -28,6 +28,7 @@ Misc
 * https://www.mrjamiebowman.com/devops/running-terraform-in-docker-locally/
 * https://blog.stack-labs.com/code/terraform_deployer_infra_en_quelques_commandes/
 * https://www.bogotobogo.com/DevOps/Terraform/Terraform-creating-multiple-instances-count-list-type.php
+* https://blog.octo.com/creer-des-instances-aws-qui-ont-acces-a-internet-sans-ip-publique-avec-terraform/
 
 * Multiple SSH keys
     * https://stackoverflow.com/a/41486527
