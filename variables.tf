@@ -8,9 +8,9 @@ variable ssh_key_pub {
   description = "SSH public key installed by default on deployed instance"
 }
 
-#variable "ip" {
-#  #Sans valeur par défaut
-#}
+variable "bastion_eip" {
+  default = ""
+}
 
 variable "aws_region" {
   default = "eu-west-3"

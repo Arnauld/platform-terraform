@@ -46,6 +46,12 @@ resource "aws_security_group" "my-security-group" {
 
 }
 
+resource "aws_eip_association" "eip_assoc" {
+  count = var.bastion_eip == "" ? 0 : 1
+  instance_id   = aws_instance.my-ec2-bastion.id
+  allocation_id = var.bastion_eip
+}
+
 #Créons maintenant notre première instance EC2: le bastion
 resource "aws_instance" "my-ec2-bastion" {
   #Cette AMI (amazon machine image) 
@@ -60,9 +66,11 @@ resource "aws_instance" "my-ec2-bastion" {
   subnet_id = aws_subnet.public-subnet.id
   #Et on utilise le security group qu'on a créé
   vpc_security_group_ids = [aws_security_group.my-security-group.id]
+  
   #Comme on veut SSH dans l'instance depuis l'internet, il est nécessaire d'associer une IP publique
-  associate_public_ip_address = true
+  associate_public_ip_address = var.bastion_eip == ""
   private_ip                  = lookup(var.vm_specs, var.bastion).ip
+
   #Les t2.micro sont les plus petites instances disponibles. L'avantage: elles rentrent dans 
   #le free tier de AWS.
   instance_type = lookup(var.vm_specs, var.bastion).type
