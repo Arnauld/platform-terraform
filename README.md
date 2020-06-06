@@ -7,6 +7,10 @@ $ docker run --rm -it --name terraform -v $(pwd):/tf -v ~/.aws:/root/.aws --entr
 ```
 
 ```
+terraform plan -var-file="vars/mentem.tfvars" -var-file="vars/private.tfvars" -var='vms=["vm09", "vm10"]'
+```
+
+```
 $ curl ipecho.net/plain ; echo
 $ AUTHORIZED_IP=
 ```
@@ -32,4 +36,3 @@ Misc
 
 * Multiple SSH keys
     * https://stackoverflow.com/a/41486527
-

@@ -81,7 +81,8 @@ variable vm_specs {
       "role"      = "supervision-ui"
     }
     "vm03" = {
-      "type"      = "t3.small"
+      # "t3.small"
+      "type"      = "t2.micro"
       "ip"        = "10.0.1.103"
       "disk_size" = "8"
       "role"      = "agent-k3s"
@@ -118,17 +119,17 @@ variable vm_specs {
       "role"      = "db"
     }
     "vm09" = {
-      "type"      = "t3.medium"
+      # "t3.large"
+      "type"      = "t2.micro"
       "ip"        = "10.0.1.109"
       "disk_size" = "16"
       "role"      = "db"
     }
     "vm10" = {
+      # "t3.large"
       "type"      = "t3.medium"
-      "ip"        = "10.0.1.110"
       "disk_size" = "16"
       "role"      = "db"
-    }
     "vm11" = {
       "type"      = "t3.medium"
       "ip"        = "10.0.1.111"
