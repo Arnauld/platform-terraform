@@ -67,13 +67,15 @@ variable vm_specs {
   type = map(map(string))
   default = {
     "vm01" = {
-      "type"      = "t2.micro"
+      # t2.micro
+      "type"      = "t3.medium"
       "ip"        = "10.0.0.101"
       "disk_size" = "8"
       "role"      = "bastion"
     }
     "vm02" = {
-      "type"      = "t2.micro"
+      # t2.micro
+      "type"      = "t3.medium"
       "ip"        = "10.0.1.102"
       "disk_size" = "8"
       "role"      = "supervision-ui"
