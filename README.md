@@ -1,9 +1,9 @@
 ```
 $ docker run --rm -it --name terraform -v $(pwd):/tf -v ~/.aws:/root/.aws --entrypoint /bin/bash hashicorp/terraform:full
 # cd /tf
-# terraform plan    -var-file="vars/rss.tfvars" -var='vms=["vm02"]'
-# terraform apply   -var-file="vars/rss.tfvars" -var='vms=["vm02"]'
-# terraform destroy -var-file="vars/rss.tfvars" -var='vms=["vm02"]'
+# terraform plan    -var-file="vars/rss.tfvars" -var-file="vars/private.tfvars" -var='vms=["vm02", "vm03", "vm04", "vm05", "vm06", "vm07", "vm08", "vm09", "vm10", "vm11", "vm12", "vm13"]'
+# terraform apply   -var-file="vars/rss.tfvars" -var-file="vars/private.tfvars" -var='vms=["vm02", "vm03", "vm04", "vm05", "vm06", "vm07", "vm08", "vm09", "vm10", "vm11", "vm12", "vm13"]'
+# terraform destroy -var-file="vars/rss.tfvars" -var-file="vars/private.tfvars" -var='vms=["vm02", "vm03", "vm04", "vm05", "vm06", "vm07", "vm08", "vm09", "vm10", "vm11", "vm12", "vm13"]'
 ```
 
 ```

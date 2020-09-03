@@ -109,20 +109,39 @@ variable vm_specs {
       "role"      = "master-k3s"
     }
     "vm08" = {
-      "type"      = "t3.large"
+      # t3.large
+      "type"      = "t3.medium"
       "ip"        = "10.0.1.108"
       "disk_size" = "16"
       "role"      = "db"
     }
     "vm09" = {
-      "type"      = "t3.large"
+      "type"      = "t3.medium"
       "ip"        = "10.0.1.109"
       "disk_size" = "16"
       "role"      = "db"
     }
     "vm10" = {
-      "type"      = "t3.large"
+      "type"      = "t3.medium"
       "ip"        = "10.0.1.110"
+      "disk_size" = "16"
+      "role"      = "db"
+    }
+    "vm11" = {
+      "type"      = "t3.medium"
+      "ip"        = "10.0.1.111"
+      "disk_size" = "16"
+      "role"      = "db"
+    }
+    "vm12" = {
+      "type"      = "t3.medium"
+      "ip"        = "10.0.1.112"
+      "disk_size" = "16"
+      "role"      = "db"
+    }
+    "vm13" = {
+      "type"      = "t3.medium"
+      "ip"        = "10.0.1.113"
       "disk_size" = "16"
       "role"      = "db"
     }
