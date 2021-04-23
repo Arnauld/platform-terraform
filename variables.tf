@@ -45,7 +45,7 @@ variable bastion_accepted_cidr_blocks {
 
 variable bastion {
   type    = string
-  default = "vm01"
+  default = "front1"
 }
 
 variable cidr {
@@ -60,93 +60,94 @@ variable cidr {
 variable vms {
   type = list(string)
   description = "All vms (name) except the bastion"
-  default = ["vm02", "vm03", "vm04", "vm05", "vm06", "vm07", "vm08", "vm09", "vm10"]
+  default = ["front2", "back01", "back02", "back03", "proxy1", "proxy2", "data01", "data02", "data03", "es01", "es02", "es03"]
+}
+
+variable vm_types {
+  type = map(map(string))
+  default = {
+    "front" = {
+      "type"      = "t2.micro"
+      "disk_size" = "8"
+      "disk_type" = "gp2"
+    }
+    "proxy"= { 
+      "type"      = "t2.micro"   
+      "disk_size" = "8"
+      "disk_type" = "gp2"
+    }
+    "back" = { 
+      "type"      = "t3.medium"  
+      "disk_size" = "8"
+      "disk_type" = "gp2"
+    }
+    "data" = { 
+      "type"      = "t3.medium"  
+      "disk_size" = "16"
+      "disk_type" = "gp2"
+    }
+    "es"   = { 
+      "type"      = "t3.medium"  
+      "disk_size" = "16"
+      "disk_type" = "gp2"
+    }
+  }
 }
 
 variable vm_specs {
   type = map(map(string))
   default = {
-    "vm01" = {
-      # t2.micro
-      "type"      = "t3.medium"
+    "front1" = {
       "ip"        = "10.0.0.101"
-      "disk_size" = "8"
-      "role"      = "bastion"
+      "role"      = "front"
     }
-    "vm02" = {
-      # t2.micro
-      "type"      = "t3.medium"
+    "front2" = {
       "ip"        = "10.0.1.102"
-      "disk_size" = "8"
-      "role"      = "supervision-ui"
+      "role"      = "front"
     }
-    "vm03" = {
-      # "t3.small"
-      "type"      = "t2.micro"
+    "back01" = {
       "ip"        = "10.0.1.103"
-      "disk_size" = "8"
-      "role"      = "agent-k3s"
+      "role"      = "back"
     }
-    "vm04" = {
-      "type"      = "t3.small"
+    "back02" = {
       "ip"        = "10.0.1.104"
-      "disk_size" = "8"
-      "role"      = "agent-k3s"
+      "role"      = "back"
     }
-    "vm05" = {
-      "type"      = "t3.small"
+    "back03" = {
       "ip"        = "10.0.1.105"
-      "disk_size" = "8"
-      "role"      = "agent-k3s"
+      "role"      = "back"
     }
-    "vm06" = {
-      "type"      = "t2.micro"
+    "proxy1" = {
       "ip"        = "10.0.1.106"
-      "disk_size" = "8"
-      "role"      = "master-k3s"
+      "role"      = "proxy"
     }
-    "vm07" = {
-      "type"      = "t2.micro"
+    "proxy2" = {
       "ip"        = "10.0.1.107"
-      "disk_size" = "8"
-      "role"      = "master-k3s"
+      "role"      = "proxy"
     }
-    "vm08" = {
-      # t3.large
-      "type"      = "t3.medium"
+    "data01" = {
       "ip"        = "10.0.1.108"
-      "disk_size" = "16"
-      "role"      = "db"
+      "role"      = "data"
     }
-    "vm09" = {
-      # "t3.large"
-      "type"      = "t2.micro"
+    "data02" = {
       "ip"        = "10.0.1.109"
-      "disk_size" = "16"
-      "role"      = "db"
+      "role"      = "data"
     }
-    "vm10" = {
-      # "t3.large"
-      "type"      = "t3.medium"
-      "disk_size" = "16"
-      "role"      = "db"
-    "vm11" = {
-      "type"      = "t3.medium"
+    "data03" = {
+      "ip"        = "10.0.1.110"
+      "role"      = "data"
+    }
+    "es01" = {
       "ip"        = "10.0.1.111"
-      "disk_size" = "16"
-      "role"      = "db"
+      "role"      = "es"
     }
-    "vm12" = {
-      "type"      = "t3.medium"
+    "es02" = {
       "ip"        = "10.0.1.112"
-      "disk_size" = "16"
-      "role"      = "db"
+      "role"      = "es"
     }
-    "vm13" = {
-      "type"      = "t3.medium"
+    "es03" = {
       "ip"        = "10.0.1.113"
-      "disk_size" = "16"
-      "role"      = "db"
+      "role"      = "es"
     }
   }
 }

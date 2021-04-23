@@ -73,15 +73,15 @@ resource "aws_instance" "my-ec2-bastion" {
 
   #Les t2.micro sont les plus petites instances disponibles. L'avantage: elles rentrent dans 
   #le free tier de AWS.
-  instance_type = lookup(var.vm_specs, var.bastion).type
+  instance_type = lookup(var.vm_types, lookup(var.vm_specs, var.bastion).role).type
 
   #Il faut un disque de démarrage pour l'instance. On choisit un disque de la taille minimale (8GB), 
   #effacé ors de l'arrêt de l'instance, et de type gp2, c'est à dire "general purpose SSD". La 
   #valeur par défaut étant "standard", ce qui correspond à un disque magnétique, on préfère 
   #utiliser un SSD.
   root_block_device {
-    volume_type           = "gp2"
-    volume_size           = lookup(var.vm_specs, var.bastion).disk_size
+    volume_type           = lookup(var.vm_types, lookup(var.vm_specs, var.bastion).role).disk_type
+    volume_size           = lookup(var.vm_types, lookup(var.vm_specs, var.bastion).role).disk_size
     delete_on_termination = true
   }
 
@@ -108,11 +108,11 @@ resource "aws_instance" "my-ec2-server" {
   associate_public_ip_address = false
   #Enfin, on peut également assigner une IP privée fixée de manière à SSH plus simplement.
   private_ip    = lookup(var.vm_specs, each.value).ip
-  instance_type = lookup(var.vm_specs, each.value).type
+  instance_type = lookup(var.vm_types, lookup(var.vm_specs, each.value).role).type
 
   root_block_device {
-    volume_type           = "gp2"
-    volume_size           = lookup(var.vm_specs, each.value).disk_size
+    volume_type           = lookup(var.vm_types, lookup(var.vm_specs, each.value).role).disk_type
+    volume_size           = lookup(var.vm_types, lookup(var.vm_specs, each.value).role).disk_size
     delete_on_termination = true
   }
 
