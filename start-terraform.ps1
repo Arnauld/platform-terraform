@@ -6,5 +6,5 @@ docker run --rm `
     -v C:\Users\x2023576\projects\platform-terraform:/tf `
     -v C:\Users\x2023576\.aws:/root/.aws `
     -it --name terraform `
-    --entrypoint /bin/bash `
-    hashicorp/terraform:full
+    --entrypoint /bin/sh `
+    hashicorp/terraform:0.14.7
